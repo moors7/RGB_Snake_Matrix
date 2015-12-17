@@ -1,19 +1,31 @@
 #ifndef SNAKE_H_
 #define SNAKE_H_
 
+// This #include statement was automatically added by the Particle IDE.
+#include "RGBmatrixPanel/RGBmatrixPanel.h"
+
 #include "application.h"
 
 /*----------------definitions------------------*/
-
+// #define data    porta.b2
+// #define latch   porta.b1
+// #define clk     porta.b0
+// #define a1      porta.B3
+// #define a2      porta.b4
+// #define a3      porta.b5
 #define right 1
 #define left 2
 #define down 3
 #define up 4
-
+// #define uppin 0
+// #define leftpin 1
+// #define rightpin 2
+// #define downpin 3
 #define ledmatrix_length 32
 #define ledmatrix_width 32
-#define game_speed 15
+#define game_speed 500
 /*----------------definitions------------------*/
+
 
 /*----------------structures------------------*/
 typedef struct snakebit {
@@ -31,9 +43,23 @@ typedef struct food {
 #pragma once
 class Serpent
 {
+    
+    RGBmatrixPanel* __matrix;
+    int new_direction = 0;
+    
 public:
 	Serpent();
+	Serpent(RGBmatrixPanel* matrix);
 	virtual ~Serpent();
+
+
+    void set_new_direction(int val){
+		this->new_direction = val;
+	}
+	int get_new_direction(){
+		return this->new_direction;
+	}
+    
 
 	void
 	    snake_intialization(mysnake* snake),
@@ -48,6 +74,7 @@ public:
 		renew_apple(food* applepointer, mysnake* listhead),
 		update_head(mysnake* snakehead),
 		clear(mysnake* snake);
+		
 	
 		
 	bool

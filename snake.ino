@@ -1,18 +1,14 @@
 // This #include statement was automatically added by the Particle IDE.
-#include "SparkIntervalTimer/SparkIntervalTimer.h"
-
-// This #include statement was automatically added by the Particle IDE.
 #include "Adafruit_mfGFX/Adafruit_mfGFX.h"
 
 // This #include statement was automatically added by the Particle IDE.
 #include "RGBmatrixPanel/RGBmatrixPanel.h"
 
+#include "math.h"
+
 // This #include statement was automatically added by the Particle IDE.
 #include "snake.h"
 
-#include "math.h"
-
-#define PI  3.14159265
 
 
 /** Define RGB matrix panel GPIO pins **/
@@ -37,7 +33,7 @@
 #endif
 /****************************************/
 
-
+int change_direction(String command);
 RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false);
 
 
@@ -55,28 +51,44 @@ food apple;
 food* applepointer;
 
 
-Serpent Snake;
+Serpent Snake(&matrix);
 
 void setup() {
+    Particle.function("direction", change_direction);
+    Particle.function("speed", change_speed);
+    matrix.begin();
+    
+    
+    // Particle.publish("pre-setup2");
+    // matrix.fillScreen(matrix.Color444(255, 0, 0));
+    // matrix.drawRect(0,0,30,30, matrix.Color333(255, 0, 255));
+    // matrix.swapBuffers(true);
+    
+    // delay(2000);
+    
+    //Particle.publish("after-delay");
     snakehead = &snake[(ledmatrix_length * ledmatrix_width) - (ledmatrix_length * 2) - (ledmatrix_width * 2) + 3];
-    apple.row = 3;
-    apple.column = 3;
+    apple.row = 5;
+    apple.column = 5;
     applepointer = &apple;
     Snake.snake_intialization(snake); //initialize snake location and direction
 }
 
 void loop() {
+    //Particle.publish("loop");
     if (!update){
         Delay++;
-        if (Delay == 10) {
+        if (Delay == 5) {
             length = 0;
             Snake.clear(snake); //remove snake directions and locations
+            matrix.fillScreen(matrix.Color444(255, 0, 0));
+            matrix.swapBuffers(true);
             //Snake.print1(patt1, patt2, patt3, patt4); //print game
         } 
-        else if (Delay == 20) {
+        else if (Delay == 10) {
             //Snake.print2(patt1, patt2, patt3, patt4); //print over
         } 
-        else if (Delay == 30) {
+        else if (Delay == 15) {
             Snake.snake_intialization(snake); //initialize snake location and direction
             Snake.renew_apple(applepointer, snakehead); //change apple location
             while (apple.row == snakehead -> srow) { //keep apple and snake at different rows
@@ -116,4 +128,15 @@ void loop() {
         update = false;
       }
     }
+    
+    delay(speed);
+}
+
+
+int change_direction(String command){
+    Snake.set_new_direction(command.toInt());
+}
+
+int change_speed(String command){
+    speed = command.toInt();
 }

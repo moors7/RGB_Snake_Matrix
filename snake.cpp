@@ -1,12 +1,3 @@
-// This #include statement was automatically added by the Particle IDE.
-#include "SparkIntervalTimer/SparkIntervalTimer.h"
-
-// This #include statement was automatically added by the Particle IDE.
-#include "Adafruit_mfGFX/Adafruit_mfGFX.h"
-
-// This #include statement was automatically added by the Particle IDE.
-#include "RGBmatrixPanel/RGBmatrixPanel.h"
-
 #include "snake.h"
 
 
@@ -14,7 +5,11 @@
 Serpent::Serpent()
 {
 }
-
+ 
+Serpent::Serpent(RGBmatrixPanel* matrix){
+    // assign the matrix to a variable here?
+    __matrix = matrix;
+}
 
 Serpent::~Serpent()
 {
@@ -36,27 +31,27 @@ void Serpent::snake_intialization(mysnake * snake) {
 	snake[(ledmatrix_length * ledmatrix_width) - (ledmatrix_length * 2) - (ledmatrix_width * 2) + 1].srow = 5;
 	snake[(ledmatrix_length * ledmatrix_width) - (ledmatrix_length * 2) - (ledmatrix_width * 2) + 1].scolumn = 3;
 	snake[(ledmatrix_length * ledmatrix_width) - (ledmatrix_length * 2) - (ledmatrix_width * 2) + 1].direction = right;
-
+    new_direction = right;
 }
 
 void Serpent::clear_matrix() {
     //clear matrix
-    matrix.fillScreen(matrix.Color444(0, 0, 0));
-    matrix.swapBuffers(true);
+    __matrix->fillScreen(__matrix->Color444(0, 0, 0));
+    __matrix->swapBuffers(true);
 }
 
 void Serpent::create_border() {
     //create border
     // x,y,width, height
-    // matrix.drawRect(0, 0, 32, 32, matrix.Color333(0, 255, 0));
+    __matrix->drawRect(0, 0, 32, 32, __matrix->Color333(0, 255, 0));
     // //matrix.drawRect(1, 1, 31, 31, matrix.Color333(0, 255, 0));
-    // matrix.swapBuffers(true);
+    __matrix->swapBuffers(true);
 }
 
 void Serpent::light_bit(char row, char column) {
     //light bit
-//   matrix.drawPixel(row, column, matrix.Color333(255, 150, 0));
-//   matrix.swapBuffers(true);
+    __matrix->drawPixel(row, column, __matrix->Color333(255, 150, 0));
+    __matrix->swapBuffers(true);
 }
 
 void Serpent::update_body(mysnake *snake, int length) {
@@ -97,50 +92,50 @@ void Serpent::change_direction(mysnake *snakehead) {
 	switch (snakehead -> direction) {
     	case up:
     	{
-    // 		if (Button(&PORTD, rightpin, 1, 1)) {
-    // 			snakehead -> direction = right;
-    // 			break;
-    // 		}
-    // 		if (Button(&PORTD, leftpin, 1, 1)) {
-    // 			snakehead -> direction = left;
-    // 			break;
-    // 		}
+    		if (new_direction == 1) {
+    			snakehead -> direction = right;
+    			break;
+    		}
+    		if (new_direction == 2) {
+    			snakehead -> direction = left;
+    			break;
+    		}
     	}
     	break;
     	case down:
     	{
-    // 		if (Button(&PORTD, rightpin, 1, 1)) {
-    // 			snakehead - > direction = right;
-    // 			break;
-    // 		}
-    // 		if (Button(&PORTD, leftpin, 1, 1)) {
-    // 			snakehead - > direction = left;
-    // 			break;
-    // 		}
+    		if (new_direction == 1) {
+    			snakehead -> direction = right;
+    			break;
+    		}
+    		if (new_direction == 2) {
+    			snakehead -> direction = left;
+    			break;
+    		}
     	}
     	break;
     	case right:
     	{
-    // 		if (Button(&PORTD, uppin, 1, 1)) {
-    // 			snakehead - > direction = up;
-    // 			break;
-    // 		}
-    // 		if (Button(&PORTD, downpin, 1, 1)) {
-    // 			snakehead - > direction = down;
-    // 			break;
-    // 		}
+    		if (new_direction == 3) {
+    			snakehead -> direction = up;
+    			break;
+    		}
+    		if (new_direction == 4) {
+    			snakehead -> direction = down;
+    			break;
+    		}
     	}
     	break;
     	case left:
     	{
-    // 		if (Button(&PORTD, uppin, 1, 1)) {
-    // 			snakehead - > direction = up;
-    // 			break;
-    // 		}
-    // 		if (Button(&PORTD, downpin, 1, 1)) {
-    // 			snakehead - > direction = down;
-    // 			break;
-    // 		}
+    		if (new_direction == 3) {
+    			snakehead -> direction = up;
+    			break;
+    		}
+    		if (new_direction == 4) {
+    			snakehead -> direction = down;
+    			break;
+    		}
     	}
     	break;
 	}
