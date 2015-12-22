@@ -23,7 +23,7 @@
 // #define downpin 3
 #define ledmatrix_length 32
 #define ledmatrix_width 32
-#define game_speed 500
+#define game_speed 150
 /*----------------definitions------------------*/
 
 
@@ -65,10 +65,10 @@ public:
 	    snake_intialization(mysnake* snake),
 		clear_matrix(),
 		create_border(),
-		light_bit(char row, char column),
+		light_bit(int row, int column, int color = 0),
 		update_body(mysnake* snake, int length),
 		show_body(mysnake* temp, int length),
-		adapt_body(mysnake* snake, char length),
+		adapt_body(mysnake* snake, int length),
 		change_direction(mysnake* snakehead),
 		happy_meal(mysnake* listhead),
 		renew_apple(food* applepointer, mysnake* listhead),

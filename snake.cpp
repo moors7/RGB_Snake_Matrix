@@ -36,7 +36,8 @@ void Serpent::snake_intialization(mysnake * snake) {
 
 void Serpent::clear_matrix() {
     //clear matrix
-    __matrix->fillScreen(__matrix->Color444(0, 0, 0));
+    //__matrix->fillScreen(__matrix->Color444(0, 0, 0));
+    __matrix->fillScreen(0);
     __matrix->swapBuffers(true);
 }
 
@@ -48,9 +49,29 @@ void Serpent::create_border() {
     __matrix->swapBuffers(true);
 }
 
-void Serpent::light_bit(char row, char column) {
+void Serpent::light_bit(int row, int column, int color) {
     //light bit
-    __matrix->drawPixel(row, column, __matrix->Color333(255, 150, 0));
+    
+    int r,g,b;
+    switch (color){
+        case 0:
+            r = 0;
+            g = 255;
+            b = 255;
+            break;
+        case 1:
+            r = 0;
+            g = 0;
+            b = 255;
+            break;
+        case 2:
+            r = 255;
+            g = 150;
+            b = 0;
+            break;
+            
+    }
+    __matrix->drawPixel(row, column, __matrix->Color333(r, g, b));
     __matrix->swapBuffers(true);
 }
 
@@ -81,7 +102,7 @@ void Serpent::show_body(mysnake * snake, int length) {
 	}
 }
 
-void Serpent::adapt_body(mysnake * snake, char length) {
+void Serpent::adapt_body(mysnake * snake, int length) {
 	int i;
 	for (i = (ledmatrix_length * ledmatrix_width) - (ledmatrix_length * 2) - (ledmatrix_width * 2) + 3 - length + 1; i < (ledmatrix_length * ledmatrix_width) - (ledmatrix_length * 2) - (ledmatrix_width * 2) + 3; i++) {
 		snake[i].direction = snake[i + 1].direction;
@@ -176,8 +197,8 @@ void Serpent::happy_meal(mysnake *listhead) {
 }
 
 void Serpent::renew_apple(food * applepointer, mysnake * listhead) {
-  applepointer->row = random(32);
-  applepointer->column = random(32);
+  applepointer->row = random(1, 31);
+  applepointer->column = random(1, 31);
 }
 
 bool Serpent::check_collision(food* applepointer, mysnake* listhead) {
