@@ -1,3 +1,5 @@
+SYSTEM_THREAD(ENABLED);
+
 #include "font3x5.h"
 
 #include "font5x5.h"
@@ -316,8 +318,10 @@ void scrollMessage(char* top,uint8_t top_font_size, uint16_t top_color){
 
 void scrollBigMessage(char *m){
     matrix.setTextSize(2);
-    int l = (strlen(m)*-6) - 32;
-    for(int i = 32; i > l; i--){
+    matrix.setTextWrap(false);
+    
+    int l = (strlen(m)*-12) - 32;
+    for(int i = 32; i > l; i-=2){
         Snake.clear_matrix();
         matrix.setCursor(i,8);
 
